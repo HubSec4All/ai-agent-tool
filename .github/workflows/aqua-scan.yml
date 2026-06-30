@@ -13,7 +13,8 @@ jobs:
         uses: docker://aquasec/trivy:latest
         with:
           args: >
-            fs --scanners vuln,secret,misconfig,sast
+            fs --scanners vuln,secret,misconfig
+            --sast
             --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
             /github/workspace
         env:
