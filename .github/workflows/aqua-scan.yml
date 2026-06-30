@@ -1,0 +1,21 @@
+name: Aqua Supply Chain Scan
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aqua Scanner
+        uses: docker://aquasec/trivy:latest
+        with:
+          args: >
+            fs --scanners vuln,secret,misconfig
+            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+            /github/workspace
+        env:
+          AQUA_KEY: ${{ secrets.AQUA_KEY }}
+          AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
+          TRIVY_RUN_AS_PLUGIN: aqua
